@@ -1,6 +1,15 @@
 spring:
   application:
     name: ub-brewery-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: google
+        uri: https://www.google.com
+        predicates:
+        - Path=/google5
+        filters:
+        - RewritePath=/google5(?<segment>/?.*), /${segment}
 
 server:
   port: 9090
