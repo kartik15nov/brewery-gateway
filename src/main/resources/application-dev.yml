@@ -1,0 +1,20 @@
+server:
+  port: 9090
+
+logging:
+  level:
+    com.ub: debug
+    org.springframework.cloud.gateway: debug
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: ub-brewery-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: beer-service
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/v1/beer*, /api/v1/beer/*, /api/v1/beerUpc/*
