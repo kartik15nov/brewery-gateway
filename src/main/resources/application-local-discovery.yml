@@ -1,0 +1,35 @@
+server:
+  port: 9090
+
+logging:
+  level:
+    com.ub: debug
+    org.springframework.cloud.gateway: debug
+
+eureka:
+  client:
+    register-with-eureka: false
+
+spring:
+  application:
+    name: ub-brewery-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: beer-service
+          uri: lb://beer-service
+          predicates:
+            - Path=/api/v1/beer*, /api/v1/beer/*, /api/v1/beerUpc/*
+
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/v1/customers/**
+
+        - id: inventory-service
+          uri: lb://inventory-service
+          predicates:
+            - Path=/api/v1/beer/*/inventory
