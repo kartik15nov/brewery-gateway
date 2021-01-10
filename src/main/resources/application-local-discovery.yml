@@ -15,9 +15,6 @@ spring:
     name: ub-brewery-gateway
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
       routes:
         - id: beer-service
           uri: lb://beer-service
@@ -33,3 +30,13 @@ spring:
           uri: lb://inventory-service
           predicates:
             - Path=/api/v1/beer/*/inventory
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: inventory-circuitBreaker
+                fallbackUri: forward:/inventory-failover
+
+        - id: inventory-failover-service
+          uri: lb://inventory-failover
+          predicates:
+            - Path=/inventory-failover/**
