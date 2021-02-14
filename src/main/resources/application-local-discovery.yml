@@ -12,7 +12,7 @@ eureka:
 
 spring:
   application:
-    name: ub-brewery-gateway
+    name: gateway-service
   cloud:
     gateway:
       routes:
@@ -36,7 +36,7 @@ spring:
                 name: inventory-circuitBreaker
                 fallbackUri: forward:/inventory-failover
 
-        - id: inventory-failover-service
+        - id: inventory-failover
           uri: lb://inventory-failover
           predicates:
             - Path=/inventory-failover/**
